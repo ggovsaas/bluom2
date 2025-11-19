@@ -1,0 +1,112 @@
+{
+  "version": "1.0",
+  "timezone_enforced": true,
+  "limits": {
+    "max_notifications_per_day": 4,
+    "weekday_window": { "start": "08:15", "end": "21:30" },
+    "weekend_window": { "start": "10:00", "end": "22:00" },
+    "quiet_hours": { "start": "21:30", "end": "07:30" }
+  },
+  "categories": {
+    "fuel": {
+      "max_per_day": 1,
+      "weekday": [
+        { "time": "08:30-09:30", "type": "breakfast_reminder", "priority": 3 },
+        { "time": "12:00-14:00", "type": "water_1", "priority": 4 },
+        { "time": "16:00-18:00", "type": "water_2", "priority": 3 },
+        { "time": "19:00-20:00", "type": "dinner_macro_check", "priority": 2 }
+      ],
+      "weekend": [
+        { "time": "11:00", "type": "brunch_water_merge", "priority": 4 },
+        { "time": "16:00", "type": "afternoon_fuel_check", "priority": 2 },
+        { "time": "20:00", "type": "evening_macro_check", "priority": 2 }
+      ]
+    },
+    "move": {
+      "max_per_day": 1,
+      "weekday": [
+        { "time": "17:00-19:00", "type": "workout_reminder", "priority": 4 },
+        { "time": "17:00", "type": "steps_low", "priority": 2 },
+        { "time": "18:30", "type": "streak_warning", "priority": 5 }
+      ],
+      "weekend": [
+        { "time": "11:00-14:00", "type": "workout_weekend", "priority": 3 },
+        { "time": "17:00", "type": "steps_low", "priority": 2 },
+        { "time": "19:00", "type": "streak_warning", "priority": 5 }
+      ]
+    },
+    "wellness": {
+      "max_per_day": 1,
+      "weekday": [
+        { "time": "19:00", "type": "mood_check", "priority": 3 },
+        { "time": "20:00", "type": "journal_suggestion", "priority": 2 },
+        { "time": "17:00-19:00", "type": "meditation", "priority": 2 }
+      ],
+      "weekend": [
+        { "time": "18:00", "type": "mood_check", "priority": 3 },
+        { "time": "21:00", "type": "journal_suggestion", "priority": 2 },
+        { "time": "16:00-19:00", "type": "meditation", "priority": 2 }
+      ]
+    },
+    "sleep": {
+      "max_per_day": 1,
+      "weekday": [
+        { "time": "08:15", "type": "sleep_insight", "priority": 1 },
+        { "time": "08:20", "type": "sleep_log", "priority": 2 },
+        { "time": "21:00", "type": "bedtime_prep", "priority": 4 }
+      ],
+      "weekend": [
+        { "time": "10:00", "type": "sleep_insight", "priority": 1 },
+        { "time": "10:15", "type": "sleep_log", "priority": 2 }
+      ]
+    },
+    "games": {
+      "max_per_day": 1,
+      "weekday": [
+        { "time": "15:00-18:00", "type": "stress_relief_mini_game", "priority": 2 }
+      ],
+      "weekend": [
+        { "time": "14:00-18:00", "type": "stress_relief_mini_game", "priority": 2 }
+      ]
+    }
+  },
+  "ai_decision_rules": {
+    "priority_order": [
+      "critical_physical_health",
+      "mental_health",
+      "commitment",
+      "engagement",
+      "optional"
+    ],
+    "triggers": {
+      "critical_physical_health": [
+        "hydration_extremely_low",
+        "skipped_meals",
+        "too_few_calories"
+      ],
+      "mental_health": [
+        "poor_sleep",
+        "low_mood"
+      ],
+      "commitment": [
+        "streak_risk_nutrition",
+        "streak_risk_workout"
+      ],
+      "engagement": [
+        "workout_missed",
+        "meditation_suggestion"
+      ],
+      "optional": [
+        "game_reminder",
+        "product_suggestion",
+        "premium_upsell"
+      ]
+    }
+  },
+  "tone_variants": {
+    "enabled": true,
+    "default_tone": "friendly",
+    "user_preference_key": "notification_tone"
+  }
+}
+

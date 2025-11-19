@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiFit - AI Fitness. Simplified.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm font-bold">✨</span>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900">AiFit</span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
+                    <a href="#testimonials" class="text-gray-600 hover:text-gray-900 transition-colors">Reviews</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
+                    <a href="#contact" class="text-gray-600 hover:text-gray-900 transition-colors">Support</a>
+                </nav>
+
+                <!-- CTA Buttons -->
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-gray-600 hover:text-gray-900 transition-colors">Login</a>
+                    <div class="flex items-center space-x-2">
+                        <a href="#" class="flex items-center space-x-1 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" class="h-8" />
+                        </a>
+                        <a href="#" class="flex items-center space-x-1 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play" class="h-8" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left - Phone Mockups -->
+                <div class="relative">
+                    <div class="relative z-10">
+                        <div class="flex space-x-4">
+                            <div class="relative">
+                                <div class="w-64 h-96 bg-gray-900 rounded-3xl p-2 shadow-2xl">
+                                    <div class="w-full h-full bg-white rounded-2xl p-4">
+                                        <div class="space-y-3">
+                                            <div class="h-4 bg-blue-500 rounded w-3/4"></div>
+                                            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                                            <div class="h-3 bg-gray-200 rounded w-2/3"></div>
+                                            <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative -mt-8">
+                                <div class="w-64 h-96 bg-gray-900 rounded-3xl p-2 shadow-2xl">
+                                    <div class="w-full h-full bg-white rounded-2xl p-4">
+                                        <div class="flex flex-col items-center space-y-4">
+                                            <div class="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                                <span class="text-white text-2xl font-bold">75%</span>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-sm text-gray-600">Protein</div>
+                                                <div class="text-xs text-gray-500">45g / 60g</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right - Content -->
+                <div class="text-center lg:text-left">
+                    <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+                        AI Fitness. Simplified.
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 max-w-2xl">
+                        Reach your goals with the #1 AI-powered fitness and nutrition tracker. AiFit is the only app you'll ever need.
+                    </p>
+                    <a href="/onboarding" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                        Start today for free!
+                        <svg class="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">📅</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Powerful Daily Tracking</h3>
+                    <p class="text-gray-600">Track your nutrition and workouts with intelligent insights</p>
+                </div>
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">💪</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Workout Plans</h3>
+                    <p class="text-gray-600">Get personalized workout recommendations based on your goals</p>
+                </div>
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">📱</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">AI Food Recognition</h3>
+                    <p class="text-gray-600">Scan food with your camera for instant nutrition analysis</p>
+                </div>
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">📋</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Comprehensive Database</h3>
+                    <p class="text-gray-600">Access thousands of foods and exercises in our database</p>
+                </div>
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">👨‍🍳</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Custom Recipes & Meals</h3>
+                    <p class="text-gray-600">Create and save your own recipes and meal plans</p>
+                </div>
+                <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl">🧮</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Macro Calculator</h3>
+                    <p class="text-gray-600">Calculate your perfect macro targets automatically</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="w-20 h-20 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-white text-3xl">👑</span>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Upgrade to <span class="text-blue-600">Premium</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Unlock the full potential of your fitness journey.
+                </p>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+                <!-- 1 Month Trial -->
+                <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 text-center relative">
+                    <div class="absolute -top-3 right-4">
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Try Premium</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">1 Month Trial</h3>
+                    <p class="text-gray-600 mb-6">Perfect for testing all features</p>
+                    <div class="text-4xl font-bold text-gray-900 mb-2">€9.08</div>
+                    <div class="text-gray-500 mb-8">/month</div>
+                    <ul class="space-y-4 mb-8 text-left">
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>All Premium features</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>30-day money-back guarantee</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                    <button class="w-full px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-full hover:bg-gray-300 transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+
+                <!-- Monthly Plan -->
+                <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 text-center relative">
+                    <div class="absolute -top-3 right-4">
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Flexible</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Monthly</h3>
+                    <p class="text-gray-600 mb-6">Month-to-month flexibility</p>
+                    <div class="text-4xl font-bold text-gray-900 mb-2">€8.09</div>
+                    <div class="text-gray-500 mb-8">/month</div>
+                    <ul class="space-y-4 mb-8 text-left">
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>All Premium features</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>Cancel anytime</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-green-500 mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>Monthly billing</span>
+                        </li>
+                    </ul>
+                    <button class="w-full px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-full hover:bg-gray-300 transition-colors">
+                        Choose Plan
+                    </button>
+                </div>
+
+                <!-- Annual Plan - Most Popular -->
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-8 text-center text-white relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                    </div>
+                    <div class="absolute -top-3 right-4">
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Save 44%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Annual</h3>
+                    <p class="opacity-90 mb-6">Best value for committed users</p>
+                    <div class="text-4xl font-bold mb-2">€4.50</div>
+                    <div class="opacity-80 mb-8">/month</div>
+                    <ul class="space-y-4 mb-8 text-left">
+                        <li class="flex items-center">
+                            <svg class="text-white mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>All Premium features</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-white mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>2 months free</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-white mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>Annual billing</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="text-white mr-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>Best value</span>
+                        </li>
+                    </ul>
+                    <button class="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-full hover:bg-gray-100 transition-colors">
+                        Choose Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Logo & Description -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">✨</span>
+                        </div>
+                        <span class="text-2xl font-bold text-gray-900">AiFit</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Your AI-powered fitness companion. Track nutrition, log workouts, and achieve your goals with intelligent insights.
+                    </p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-600 hover:text-gray-900 transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- App Store Badges -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Download</h3>
+                    <div class="space-y-4">
+                        <a href="#" class="block">
+                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" class="h-12" />
+                        </a>
+                        <a href="#" class="block">
+                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="h-12" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center">
+                <p class="text-gray-500">&copy; 2024 AiFit. Your AI-powered fitness companion</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+
