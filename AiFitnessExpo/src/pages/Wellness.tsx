@@ -234,9 +234,15 @@ export default function WellnessScreen() {
     { night: 'Sun', quality: 87, hours: 7.9 },
   ];
 
-  // Get userId from profile or default to 1
-  const getUserId = () => {
-    return profile?.id || 1;
+  // Get authenticated user ID from Supabase
+  const getUserId = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      return user?.id || null;
+    } catch (e) {
+      console.error('Error getting user ID:', e);
+      return null;
+    }
   };
 
   // Load habits from AsyncStorage
@@ -259,14 +265,19 @@ export default function WellnessScreen() {
 
   // Load AIMind data
   useEffect(() => {
-    const userId = getUserId();
-    fetchGratitudeEntries(userId);
-    fetchJournalEntries(userId);
-    fetchInsights(userId);
+    const loadData = async () => {
+      const userId = await getUserId();
+      if (userId) {
+        fetchGratitudeEntries(userId);
+        fetchJournalEntries(userId);
+        fetchInsights(userId);
+      }
+    };
+    loadData();
   }, [profile]);
 
   // Fetch gratitude entries
-  const fetchGratitudeEntries = async (userId: number) => {
+  const fetchGratitudeEntries = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('gratitude_entries')
@@ -283,7 +294,7 @@ export default function WellnessScreen() {
   };
 
   // Fetch journal entries
-  const fetchJournalEntries = async (userId: number) => {
+  const fetchJournalEntries = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('journal_entries')
@@ -300,7 +311,7 @@ export default function WellnessScreen() {
   };
 
   // Fetch insights
-  const fetchInsights = async (userId: number) => {
+  const fetchInsights = async (userId: string) => {
     setLoadingInsights(true);
     try {
       // Insights can be computed from journal/gratitude entries or stored separately
@@ -325,8 +336,13 @@ export default function WellnessScreen() {
   // Save gratitude entry
   const saveGratitude = async () => {
     if (!gratitudeEntry.trim()) return;
-    
-    const userId = getUserId();
+
+    const userId = await getUserId();
+    if (!userId) {
+      Alert.alert('Error', 'Please log in to save gratitude entries');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('gratitude_entries')
@@ -335,7 +351,7 @@ export default function WellnessScreen() {
           entry: gratitudeEntry,
           created_at: new Date().toISOString()
         });
-      
+
       if (error) throw error;
       setGratitudeEntry('');
       setShowGratitudeModal(false);
@@ -350,8 +366,13 @@ export default function WellnessScreen() {
   // Save journal entry
   const saveJournal = async () => {
     if (!journalContent.trim()) return;
-    
-    const userId = getUserId();
+
+    const userId = await getUserId();
+    if (!userId) {
+      Alert.alert('Error', 'Please log in to save journal entries');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('journal_entries')
@@ -1329,8 +1350,9 @@ export default function WellnessScreen() {
 
             <TouchableOpacity
               style={[styles.modalButton, { backgroundColor: '#14b8a6', marginTop: 24 }]}
-              onPress={() => {
-                fetchInsights(getUserId());
+              onPress={async () => {
+                const userId = await getUserId();
+                if (userId) fetchInsights(userId);
               }}
             >
               <Text style={styles.modalButtonText}>Refresh Insights</Text>
@@ -1340,17 +1362,17 @@ export default function WellnessScreen() {
       </Modal>
 
       {/* Meditation Hub */}
-      {showMeditationHub && (
+      {showMeditationHub && profile?.id && (
         <MeditationHub
-          userId={getUserId()}
+          userId={profile.id}
           onClose={() => setShowMeditationHub(false)}
         />
       )}
 
       {/* Games Hub */}
-      {showGamesHub && (
+      {showGamesHub && profile?.id && (
         <GamesHub
-          userId={getUserId()}
+          userId={profile.id}
           onClose={() => setShowGamesHub(false)}
         />
       )}
