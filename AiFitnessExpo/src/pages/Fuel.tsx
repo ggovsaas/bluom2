@@ -19,6 +19,7 @@ import { useUser } from '../context/UserContext';
 import { supabase } from '../lib/supabase';
 import { playSound } from '../utils/soundEffects';
 import { sendHydrationReminder, sendMealReminder } from '../utils/notifications';
+import PhotoRecognitionModal from '../components/PhotoRecognitionModal';
 
 const { width } = Dimensions.get('window');
 const isSmallScreen = width < 380;
@@ -945,34 +946,30 @@ export default function FuelScreen() {
         </View>
       </Modal>
 
-      {/* Photo Capture Modal - Placeholder */}
-      <Modal visible={showPhotoCapture} animationType="slide" transparent>
-        <View style={styles.modalOverlay}>
-          <View style={styles.photoModalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>AI Food Recognition</Text>
-              <TouchableOpacity onPress={() => setShowPhotoCapture(false)}>
-                <Ionicons name="close" size={24} color="#1e293b" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.photoModalBody}>
-              <Text style={styles.photoModalText}>
-                Camera functionality will be implemented with expo-camera. This will allow you to take photos of
-                your food for AI recognition.
-              </Text>
-              <TouchableOpacity
-                style={styles.photoModalButton}
-                onPress={() => {
-                  Alert.alert('Coming Soon', 'Photo recognition feature will be available soon!');
-                  setShowPhotoCapture(false);
-                }}
-              >
-                <Text style={styles.photoModalButtonText}>Got it</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/* Photo Recognition Modal */}
+      <PhotoRecognitionModal
+        visible={showPhotoCapture}
+        onClose={() => setShowPhotoCapture(false)}
+        onAddFood={(item, quantity, meal) => {
+          const entry = {
+            id: Date.now().toString(),
+            name: item.name,
+            calories: item.calories * quantity,
+            protein: item.protein * quantity,
+            carbs: item.carbs * quantity,
+            fat: item.fat * quantity,
+            quantity,
+            meal,
+            date: currentDate,
+            nutrition: item,
+          };
+          addFoodEntry(entry);
+          setShowPhotoCapture(false);
+          playSound('success');
+          Alert.alert('Success', `Added ${item.name} to ${meal}`);
+        }}
+        meal={selectedMeal || 'Lunch'}
+      />
 
       {/* Create Recipe Modal - Simplified Version */}
       <CreateRecipeModal

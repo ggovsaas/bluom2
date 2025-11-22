@@ -85,6 +85,7 @@ const Fuel = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [recognitionError, setRecognitionError] = useState<string | null>(null);
+  const [foodQuantities, setFoodQuantities] = useState<{[key: number]: number}>({});
 
   // Water unit options
   const waterUnits = [
@@ -286,34 +287,72 @@ const Fuel = () => {
     setShowWaterModal(false);
   };
 
-  // AI Photo Recognition
+  // AI Photo Recognition with Cascading Fallbacks
   const handlePhotoRecognition = async () => {
     try {
       setIsProcessing(true);
       setRecognitionError(null);
-      
+
       if (!capturedImage) {
         setRecognitionError('No image captured. Please take a photo first.');
         return;
       }
 
-      // Convert base64 image to blob for API
-      const base64Data = capturedImage.split(',')[1];
-      const blob = await fetch(`data:image/jpeg;base64,${base64Data}`).then(res => res.blob());
-      
-      // Create FormData for multipart upload
-      const formData = new FormData();
-      formData.append('image', blob, 'food.jpg');
-      
-      // Food recognition - upload to Supabase storage and process
-      // For now, skip recognition and let user search manually
-      // TODO: Implement food recognition via Supabase Edge Function or external API
-      const response = { data: { success: false, message: 'Food recognition not available' } };
-      
-      if (response.data.success) {
-        setRecognizedFood(response.data.recognized_food);
+      // Resize image to 1024px max dimension
+      const resizedImage = await resizeImage(capturedImage, 1024);
+
+      // Remove data URL prefix to get base64 string
+      const base64Data = resizedImage.replace(/^data:image\/\w+;base64,/, '');
+
+      // Call Supabase Edge Function
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        setRecognitionError('Please log in to use photo recognition.');
+        return;
+      }
+
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/clarifai-recognize`;
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64Data }),
+      });
+
+      const result = await response.json();
+
+      if (result.error === 'recognition_failed') {
+        setRecognitionError("We couldn't recognize the food. Please try a clearer photo or enter the items manually.");
+        return;
+      }
+
+      if (result.error === 'server_error') {
+        setRecognitionError('Recognition Service Error. Please try again later.');
+        return;
+      }
+
+      if (result.success && result.results && result.results.length > 0) {
+        // Store multiple recognized items
+        setRecognizedFood({
+          items: result.results,
+          vision_source: result.vision_source
+        });
+
+        // Initialize quantities to 1 for each item
+        const initialQuantities: {[key: number]: number} = {};
+        result.results.forEach((_: any, index: number) => {
+          initialQuantities[index] = 1;
+        });
+        setFoodQuantities(initialQuantities);
+
+        // Log recognition to database
+        await logRecognition(result.results, result.vision_source);
       } else {
-        setRecognitionError(response.data.message || 'Failed to recognize food');
+        setRecognitionError('No food items detected in the image.');
       }
     } catch (error) {
       console.error('Photo recognition error:', error);
@@ -323,11 +362,66 @@ const Fuel = () => {
     }
   };
 
-  const addRecognizedFood = (meal: string) => {
-    if (recognizedFood) {
-      addFood(recognizedFood, meal);
-      setRecognizedFood(null);
-      setShowPhotoCapture(false);
+  // Resize image to max dimension
+  const resizeImage = (base64: string, maxSize: number): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.85));
+      };
+      img.src = base64;
+    });
+  };
+
+  // Log recognition to database
+  const logRecognition = async (items: any[], visionSource: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('food_recognition_logs').insert({
+        user_id: user.id,
+        detected_items: items,
+        vision_source: visionSource,
+        language: profile?.language || 'en',
+        success: true
+      });
+    } catch (error) {
+      console.error('Failed to log recognition:', error);
+    }
+  };
+
+  const addRecognizedFood = (item: any, index: number, meal: string) => {
+    if (item && item.nutrition) {
+      const quantity = foodQuantities[index] || 1;
+      addFood({
+        name: item.name,
+        calories: item.nutrition.calories * quantity,
+        protein: item.nutrition.protein * quantity,
+        carbs: item.nutrition.carbs * quantity,
+        fat: item.nutrition.fat * quantity,
+        serving_size: item.nutrition.servingSize
+      }, meal);
     }
   };
 
@@ -1016,45 +1110,117 @@ const Fuel = () => {
             </div>
             
             {recognizedFood ? (
-              <div className="text-center">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Camera className="text-green-600" size={32} />
+              <div>
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="text-green-600" size={28} />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-800 mb-2">{recognizedFood.name}</h4>
-                <p className="text-sm text-gray-600 mb-4">
-                  Confidence: {Math.round(recognizedFood.confidence * 100)}%
+                <h4 className="text-lg font-bold text-gray-800 mb-1 text-center">
+                  Detected {recognizedFood.items.length} Food Item{recognizedFood.items.length > 1 ? 's' : ''}
+                </h4>
+                <p className="text-xs text-gray-500 mb-4 text-center">
+                  Recognized by {recognizedFood.vision_source === 'clarifai' ? 'Clarifai' : 'OpenAI GPT-4o'}
                 </p>
-                <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-gray-600">
-                    {recognizedFood.calories} cal • {recognizedFood.protein}g protein • {recognizedFood.carbs}g carbs • {recognizedFood.fat}g fat
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">{recognizedFood.serving_size}</p>
+
+                <div className="max-h-96 overflow-y-auto space-y-3 mb-4">
+                  {recognizedFood.items.map((item: any, index: number) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h5 className="font-semibold text-gray-800">{item.name}</h5>
+                          <p className="text-xs text-gray-500">
+                            Confidence: {Math.round(item.confidence * 100)}%
+                          </p>
+                        </div>
+                      </div>
+
+                      {item.nutrition ? (
+                        <div className="bg-white rounded-lg p-3 mt-2">
+                          <div className="flex items-center justify-between mb-2">
+                            <div>
+                              <p className="text-sm text-gray-700 font-medium">
+                                {Math.round(item.nutrition.calories * (foodQuantities[index] || 1))} cal
+                              </p>
+                              <div className="flex gap-3 text-xs text-gray-600">
+                                <span>P: {Math.round(item.nutrition.protein * (foodQuantities[index] || 1))}g</span>
+                                <span>C: {Math.round(item.nutrition.carbs * (foodQuantities[index] || 1))}g</span>
+                                <span>F: {Math.round(item.nutrition.fat * (foodQuantities[index] || 1))}g</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => {
+                                  const newQty = Math.max(0.5, (foodQuantities[index] || 1) - 0.5);
+                                  setFoodQuantities({...foodQuantities, [index]: newQty});
+                                }}
+                                className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
+                              >
+                                -
+                              </button>
+                              <input
+                                type="number"
+                                step="0.5"
+                                min="0.5"
+                                value={foodQuantities[index] || 1}
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value);
+                                  if (val >= 0.5) {
+                                    setFoodQuantities({...foodQuantities, [index]: val});
+                                  }
+                                }}
+                                className="w-16 text-center border border-gray-300 rounded-lg p-1 text-sm"
+                              />
+                              <button
+                                onClick={() => {
+                                  const newQty = (foodQuantities[index] || 1) + 0.5;
+                                  setFoodQuantities({...foodQuantities, [index]: newQty});
+                                }}
+                                className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-3">
+                            {item.nutrition.servingSize} • Source: {item.nutrition.source.toUpperCase()}
+                          </p>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            {defaultMeals.slice(0, 4).map((meal) => (
+                              <button
+                                key={meal}
+                                onClick={() => {
+                                  addRecognizedFood(item, index, meal);
+                                }}
+                                className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium"
+                              >
+                                Add to {meal}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-2">
+                          <p className="text-xs text-yellow-700">
+                            <Info className="inline mr-1" size={12} />
+                            No detailed nutrition data found in our databases for this item.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
-                
-                <div className="space-y-2 mb-6">
-                  <p className="text-sm font-medium text-gray-700">Add to meal:</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {defaultMeals.map((meal) => (
-                      <button
-                        key={meal}
-                        onClick={() => addRecognizedFood(meal)}
-                        className="p-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
-                      >
-                        {meal}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
+
                 <button
                   onClick={() => {
                     setRecognizedFood(null);
                     setCapturedImage(null);
+                    setFoodQuantities({});
                     startCamera();
                   }}
                   className="w-full py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                 >
-                  Try Again
+                  <RotateCcw className="inline mr-2" size={16} />
+                  Scan Another Photo
                 </button>
               </div>
             ) : (
