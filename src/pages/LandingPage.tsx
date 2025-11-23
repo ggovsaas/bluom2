@@ -41,7 +41,7 @@ export default function LandingPage() {
               <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white text-sm font-bold">✨</span>
               </div>
-              <span className="text-2xl font-bold text-gray-900">BloomYou</span>
+              <span className="text-2xl font-bold text-gray-900">Bluom</span>
             </div>
 
             {/* Navigation */}
@@ -97,7 +97,7 @@ export default function LandingPage() {
                       <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
                         <img 
                           src="/images/app-store/screenshot-home-iphone.png" 
-                          alt="BloomYou Home Dashboard"
+                          alt="Bluom Home Dashboard"
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             // Fallback to placeholder if image doesn't exist
@@ -127,7 +127,7 @@ export default function LandingPage() {
                       <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
                         <img 
                           src="/images/app-store/screenshot-fuel-iphone.png" 
-                          alt="BloomYou Nutrition Tracking"
+                          alt="Bluom Nutrition Tracking"
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             // Fallback to placeholder if image doesn't exist
@@ -162,7 +162,7 @@ export default function LandingPage() {
                 Your Wellness Journey
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl">
-                Reach your goals with the #1 AI-powered fitness and wellness tracker. BloomYou is the only app you'll ever need.
+                Reach your goals with the #1 AI-powered fitness and wellness tracker. Bluom is the only app you'll ever need.
               </p>
               <Link
                 to="/onboarding"
@@ -325,7 +325,7 @@ export default function LandingPage() {
                   <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
                     <img 
                       src="/images/app-store/screenshot-move-iphone.png" 
-                          alt="BloomYou Workout Tracking"
+                          alt="Bluom Workout Tracking"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         // Fallback to placeholder if image doesn't exist
@@ -348,7 +348,7 @@ export default function LandingPage() {
                   <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
                     <img 
                       src="/images/app-store/screenshot-wellness-iphone.png" 
-                      alt="BloomYou Wellness Tracking"
+                      alt="Bluom Wellness Tracking"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         // Fallback to placeholder if image doesn't exist
@@ -855,7 +855,7 @@ export default function LandingPage() {
                 <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm font-bold">✨</span>
                 </div>
-                <span className="text-2xl font-bold text-gray-900">BloomYou</span>
+                <span className="text-2xl font-bold text-gray-900">Bluom</span>
               </div>
               <p className="text-gray-600 mb-4">
                 Your AI-powered fitness companion. Track nutrition, log workouts, and achieve your goals with intelligent insights.
@@ -905,7 +905,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center">
-            <p className="text-gray-500">&copy; 2024 BloomYou. Your wellness companion</p>
+            <p className="text-gray-500">&copy; 2024 Bluom. Your wellness companion</p>
           </div>
         </div>
       </footer>

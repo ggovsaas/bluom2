@@ -555,7 +555,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               <span className="text-white text-3xl">✨</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Welcome to BloomYou!
+              Welcome to Bluom!
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               Let's personalize your fitness journey with a few quick questions

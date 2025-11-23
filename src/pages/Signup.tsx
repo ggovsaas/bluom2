@@ -109,7 +109,7 @@ export default function Signup() {
           <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <span className="text-white text-2xl">✨</span>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Join BloomYou</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Join Bluom</h2>
           <p className="mt-2 text-gray-600">Create your account to get started</p>
         </div>
 

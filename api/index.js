@@ -178,7 +178,7 @@ module.exports = async (req, res) => {
   try {
     // Health check
     if (path === '/api/health') {
-      return res.json({ status: 'OK', message: 'BloomYou API is running' });
+      return res.json({ status: 'OK', message: 'Bluom API is running' });
     }
 
     // User registration

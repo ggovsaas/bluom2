@@ -31,7 +31,7 @@ const Header: React.FC = () => {
           <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
             <span className="text-white text-sm font-bold">✨</span>
           </div>
-          <span className="text-xl font-bold text-gray-900">BloomYou</span>
+          <span className="text-xl font-bold text-gray-900">Bluom</span>
         </Link>
 
         {/* Right side - Simple avatar or login button */}
