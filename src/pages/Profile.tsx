@@ -14,18 +14,14 @@ import {
   Award,
   ChevronRight,
   Scale,
-  Ruler,
-  Moon,
-  Sun
+  Ruler
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
-import { useTheme } from '../context/ThemeContext';
 import { openCustomerPortal } from '../utils/stripe';
 import { checkPremiumStatus } from '../utils/premium';
 
 const Profile: React.FC = () => {
   const { profile, updateProfile } = useUser();
-  const { theme, effectiveTheme, setTheme } = useTheme();
   const [showEditModal, setShowEditModal] = useState(false);
   const [editForm, setEditForm] = useState({
     name: profile?.name || '',
@@ -269,66 +265,6 @@ const Profile: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Dark Mode Toggle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="mb-6"
-        >
-          <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                  {effectiveTheme === 'dark' ? (
-                    <Moon className="text-blue-500" size={24} />
-                  ) : (
-                    <Sun className="text-yellow-500" size={24} />
-                  )}
-                </div>
-                <div className="text-left">
-                  <p className="font-medium text-gray-800 dark:text-white">Dark Mode</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {theme === 'system' ? 'Following system' : effectiveTheme === 'dark' ? 'Enabled' : 'Disabled'}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setTheme('light')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    theme === 'light'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
-                  }`}
-                >
-                  Light
-                </button>
-                <button
-                  onClick={() => setTheme('dark')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    theme === 'dark'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
-                  }`}
-                >
-                  Dark
-                </button>
-                <button
-                  onClick={() => setTheme('system')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    theme === 'system'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
-                  }`}
-                >
-                  Auto
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Menu Items */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -340,18 +276,18 @@ const Profile: React.FC = () => {
             <button
               key={item.label}
               onClick={item.action}
-              className="w-full bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-lg flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="w-full bg-white rounded-2xl p-4 shadow-lg flex items-center justify-between hover:bg-gray-50 transition-colors"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                  <item.icon className="text-gray-600 dark:text-gray-400" size={24} />
+                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                  <item.icon className="text-gray-600" size={24} />
                 </div>
                 <div className="text-left">
-                  <p className="font-medium text-gray-800 dark:text-white">{item.label}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.subtitle}</p>
+                  <p className="font-medium text-gray-800">{item.label}</p>
+                  <p className="text-sm text-gray-600">{item.subtitle}</p>
                 </div>
               </div>
-              <ChevronRight className="text-gray-400 dark:text-gray-600" size={20} />
+              <ChevronRight className="text-gray-400" size={20} />
             </button>
           ))}
         </motion.div>
