@@ -25,6 +25,7 @@ import Admin from './pages/Admin';
 import CreateRecipe from './pages/CreateRecipe';
 import MyRecipes from './pages/MyRecipes';
 import { UserProvider } from './context/UserContext';
+import { ThemeProvider } from './context/ThemeContext';
 import './App.css';
 
 // Navigation component that only shows on app pages
@@ -123,8 +124,9 @@ function App() {
   }
 
   return (
-    <UserProvider>
-      <Router>
+    <ThemeProvider>
+      <UserProvider>
+        <Router>
         <Routes>
           <Route path="/landingpage" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
@@ -168,8 +170,9 @@ function App() {
             </div>
           } />
         </Routes>
-      </Router>
-    </UserProvider>
+        </Router>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 
